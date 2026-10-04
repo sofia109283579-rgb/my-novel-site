@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>虚实之门 - 多元小说空间</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Courier New', Courier, monospace; }
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000000;
+            color: #ffffff;
+            overflow: hidden;
+            position: relative;
+        }
+        #bg-canvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.2;
+        }
+        .main-container {
+            text-align: center; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 40px;
+        }
+        h1 { font-size: 3rem; letter-spacing: 5px; text-shadow: 0 0 10px #ff0055; font-family: 'Times New Roman', serif; font-weight: 100; }
+        .subtitle { font-size: 1rem; opacity: 0.7; }
+        .portal-hub { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; }
+        .portal-card {
+            width: 260px; height: 350px; border: 1px solid #ffffff; background: rgba(255, 255, 255, 0.05);
+            cursor: pointer; transition: all 0.4s ease; display: flex; flex-direction: column; justify-content: space-around;
+            padding: 20px; backdrop-filter: blur(5px);
+        }
+        .portal-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+            border-color: #ff0055; background: rgba(255, 255, 255, 0.1);
+        }
+        .portal-card h2 { font-size: 1.5rem; color: #ff0055; font-family: 'KaiTi', serif; }
+        .portal-card p { font-size: 0.85rem; line-height: 1.6; }
+        .enter-btn {
+            border: 1px solid #ffffff; padding: 10px 20px; color: #ffffff; background: transparent;
+            transition: 0.3s; cursor: pointer; text-transform: uppercase; font-size: 0.8rem;
+        }
+        .portal-card:hover .enter-btn { background: #ff0055; border-color: #ff0055; }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="main-container">
+        <div>
+            <h1>虚 实 之 门</h1>
+            <p class="subtitle">选择你的入口，通往未知的故事宇宙</p>
+        </div>
+
+        <div class="portal-hub">
+            <!-- 入口 1：修仙 -->
+            <div class="portal-card" onclick="location.href='xianxia.html'">
+                <h2>天玄至圣</h2>
+                <p>【修仙/玄幻】<br><br>凡域崛起，杀上仙域，成就仙帝！<br>主角：林玄天<br>同门：叶依仙、楚千炎等</p>
+                <button class="enter-btn">进入修仙界</button>
+            </div>
+
+            <!-- 入口 2：后室 -->
+            <div class="portal-card" onclick="location.href='backrooms.html'">
+                <h2>后室生存手册</h2>
+                <p>【都市怪谈/后室】<br><br>Level C 与未知智斗。<br>自创势力：【T.K.A.I.】<br>他能活下来吗？</p>
+                <button class="enter-btn">误入后室</button>
+            </div>
+
+            <!-- 入口 3：抽象/剑界 -->
+            <div class="portal-card" onclick="location.href='tianjian.html'">
+                <h2>天剑长生</h2>
+                <p>【修仙/抽象】<br><br>阴阳生太极，无极生奥。<br>天人观法，剑气长生。<br>???</p>
+                <button class="enter-btn">踏入剑界</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const particles = [];
+        for (let i = 0; i < 80; i++) {
+            particles.push({
+                x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                vx: Math.random() * 0.6 - 0.3, vy: Math.random() * 0.6 - 0.3,
+                size: Math.random() * 2, color: `rgba(255, 255, 255, ${Math.random() * 0.5})`
+            });
+        }
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if (p.x < 0 || p.x > canvas.width) p.vx = -p.vx;
+                if (p.y < 0 || p.y > canvas.height) p.vy = -p.vy;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = p.color; ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
